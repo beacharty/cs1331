@@ -1,0 +1,21 @@
+Java Notes
+
+General-----------------------------------------------------------------------
+-Package Importing -- import java.<Package>.<Class> -or- java.<Package>.*
+	**-java.lang - includes core classes/primitives for Java to function
+	-java.io -input/output operations
+	-java.util -bunch of useful classes
+	-java.text -formatting
+	-java.awt -gui work
+	-java.net -networking
+	-java.applet -creating applets
+	-many more [look up documentation online]
+-
+I/O---------------------------------------------------------------------------
+-Printing to Command Line
+	-System.out.print(ln) - with or without \n
+	-System.out.printf - with formatting (calls system.out.format)
+		-format specifiers -- %<flag><converter>
+			-https://docs.oracle.com/javase/tutorial/java/data/numberformat.html
+			-%n - new line -%d - double -%s - string -%f - float
+			-
