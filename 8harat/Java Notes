@@ -10,7 +10,27 @@ General-----------------------------------------------------------------------
 	-java.net -networking
 	-java.applet -creating applets
 	-many more [look up documentation online]
--
+-Git
+	-Configure Git
+		$ git config --global user.name <user_name>
+		$ git config --global user.email <email_id>
+	-Create Local Repository w/ README
+		$ cd ~/path/to/git
+		$ git init <RepoName>
+		$ cd ~/path/to/repo
+		$ subl README 
+			-write stuff in here
+	-Create Repo on Github with name, <RepoName> then copy https link
+		$ git remote add origin <https link>
+	-Add Repo files to index & Commit
+		$ cd ~/path/to/git
+		$ git add * --or-- $ git add ~/path/to/<individual files/folders>
+		$ git commit -m "<some message>"
+	-Push files from local repo to github repo 
+		$ git push origin master
+	-Pull files from github repo to local repo
+		$ git pull origin master
+
 I/O---------------------------------------------------------------------------
 -Printing to Command Line
 	-System.out.print(ln) - with or without \n
@@ -18,4 +38,3 @@ I/O---------------------------------------------------------------------------
 		-format specifiers -- %<flag><converter>
 			-https://docs.oracle.com/javase/tutorial/java/data/numberformat.html
 			-%n - new line -%d - double -%s - string -%f - float
-			-
