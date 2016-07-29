@@ -1,4 +1,4 @@
-Java Notes
+Java Notes (Aravind Password: supertopsecret)
 
 General-----------------------------------------------------------------------
 -Package Importing -- import java.<Package>.<Class> -or- java.<Package>.*
@@ -18,7 +18,7 @@ General-----------------------------------------------------------------------
 		$ cd ~/path/to/git
 		$ git init <RepoName>
 		$ cd ~/path/to/repo
-		$ subl README 
+		$ subl README
 			-write stuff in here
 	-Create Repo on Github with name, <RepoName> then copy https link
 		$ git remote add origin <https link>
@@ -26,15 +26,50 @@ General-----------------------------------------------------------------------
 		$ cd ~/path/to/git
 		$ git add * --or-- $ git add ~/path/to/<individual files/folders>
 		$ git commit -m "<some message>"
-	-Push files from local repo to github repo 
+	-Push files from local repo to github repo
 		$ git push origin master
 	-Pull files from github repo to local repo
 		$ git pull origin master
 
+Values/Variables--------------------------------------------------------------
+-declaration (int num;)
+-assignment (num = 4;)
+	3.14159 (double), 3.14159f (float)
+	float & Double can hold int values so type conversion can happen
+-initialization (int num = 4;) //values & variables must be type compatible
+-types: byte (8bit signed, -128 to 127)
+		short (16bit signed, -32768 to 32767)
+		int (32bit signed, range in 10^9)
+		long (64bit signed, range in 10^18)
+		float (32bit single precision, don't use for precise values)
+		double (64bit double precision, not for precise values, for decimals)
+			-for currency, use java.math.BigDecimal class
+		char (16bit unicode character)
+		boolean (true or false)
+		String (sequence of characters) *this is a class (+ concatenates)
+			-length() returns string length
+			-indexOf(char) returns firxt index of char in string
+			-substring(begin, end) begin(inclusive) to end(exclusive)
+			-trim() removes whitespace from beginning and end
+
 I/O---------------------------------------------------------------------------
--Printing to Command Line
+-Console Output
 	-System.out.print(ln) - with or without \n
 	-System.out.printf - with formatting (calls system.out.format)
 		-format specifiers -- %<flag><converter>
 			-https://docs.oracle.com/javase/tutorial/java/data/numberformat.html
-			-%n - new line -%d - double -%s - string -%f - float
+			d-%n - new line -%d - double -%s - string -%f - floatd
+-Console Input
+	-import java.util.Scanner
+	-Scanner sc = new Scanner(System.in);
+-File I/O
+	-import java.util.Scanner, import java.io.File, import java.io.PrintStream
+	I-Scanner sc = new Scanner(new File("<file name.type>"));
+		-hasNext(), next(), nextInt() etc
+		-link: https://goo.gl/nMiQur
+	O-Prinsteam outf = new PrintStream(new File("<file name.type>"));
+		-outf.print() or outf.println() are the basic methods in PrintStream
+		-link: https://goo.gl/PP1Bz3
+-Currency Formatting
+	-import java.text.NumberFormat & import java.util.Locale
+	-create an instance with getCurrencyInstance(Locale.<>)
