@@ -1,0 +1,383 @@
+Java Notes (Aravind Password: supertopsecret)
+
+General----------------------------------------------------------------------
+-Package Importing -- import java.<Package>.<Class> -or- java.<Package>.*
+			-* is a wildcard - just use this for everything, no difference between * and specific import
+	**-java.lang - includes core classes/primitives for Java to function
+	-java.io -input/output operations
+	-java.util -bunch of useful classes
+	-java.text -formatting
+	-java.awt -gui work
+	-java.net -networking
+	-java.applet -creating applets
+	-many more [look up documentation online]
+-Git
+	-Configure Git
+		$ git config --global user.name <user_name>
+		$ git config --global user.email <email_id>
+	-Create Local Repository w/ README
+		$ cd ~/path/to/git
+		$ git init <RepoName>
+		$ cd ~/path/to/repo
+		$ subl README
+			-write stuff in here
+	-Create Repo on Github with name, <RepoName> then copy https link
+		$ git remote add origin <https link>
+	-Add Repo files to index & Commit
+		$ cd ~/path/to/git
+		$ git add * --or-- $ git add ~/path/to/<individual files/folders>
+		$ git commit -m "<some message>"
+	-Push files from local repo to github repo
+		$ git push origin master
+	-Pull files from github repo to local repo
+		$ git pull origin master
+-Random Class
+	-Random rand = new Random(seed) - seed is the initial value
+	-Random rand = new Random() - picks default initial value (0)
+	-methods: nextInt, nextDouble, nextFloat, next(int type), nextBoolean
+		https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Values/Variables-------------------------------------------------------------
+-declaration (int num;)
+	-identifiers contain letters, #'s, _ or $ {can't start with #'s}
+-assignment (num = 4;)
+	3.14159 (double), 3.14159f (float)
+	float & Double can hold int values so type conversion can happen
+	-java does not truncate values so if an expression involves a double, the output will be a double
+	-java automatically widens types. use casting to narrow if needed
+	(ex: int i = (int) (<double>))
+-initialization (int num = 4;) //values & variables must be type compatible
+-types: byte (8bit signed, -128 to 127)
+		short (16bit signed, -32768 to 32767)
+		int (32bit signed, range in 10^9)
+		long (64bit signed, range in 10^18)
+		Floating Point Literals
+		-float (32bit single precision, don't use for precise values)
+		-double (64bit double precision, not for precise values, for decimals)
+			-roughly double significant figures vs floating point
+			-for currency, use java.math.BigDecimal class
+		char (16bit unicode character)
+		boolean (true or false)
+			-<=, >=, ==
+		String (sequence of characters) *this is a class (+ concatenates)
+			-length() returns string length
+			-indexOf(char) returns first index of char in string
+			-lastIndexOf(char)
+			-substring(begin, end) begin(inclusive) to end(exclusive)
+			-trim() removes whitespace from beginning and end
+			-charAt(int index) returns char at index or -1 if out of bounds
+			-to<Upper,Lower>Case()
+			-replace(), replaceAll()
+			-isEmpty()
+			-equals(), equalsIgnoreCase()
+				-equals() compares value of strings
+				-== compares whether two aliases point to same spot of memory
+			-contains(CharSequence) returns boolean if contained within
+		CharSequence
+			-basically like a String, but used for some String methods
+		enum
+			-class that defines a known set of constant values
+			public enum Compass{ NORTH, SOUTH, EAST, WEST }
+			Compass dir = Compass.NORTH;
+				-Since it is a class, enum has a set of convenience methods
+				-valueOf(String)- returns enum constant of specified string
+					Compass.valueOf("NORTH") returns Compass.NORTH
+				-values()- returns all constant values in array
+-Short circuit evaluation: (b && c) if b is false, c is not evaluated
+-constant values: final <datatype> <CONSTANT VALUE> = <value>
+-mod(%)- num1%num2 returns remainder (sign of num1 determines sign of mod)
+-<Type>.parse<Type>(String s, int radix)
+	-string s to be converted to integer
+	-radix- 10(decimal), 2(binary), 8(octal), 16 (hexadecimal)
+
+I/O--------------------------------------------------------------------------
+-Console Output
+	-System.out.print(ln) - with or without \n
+	-System.out.printf - with formatting (calls system.out.format)
+		-format specifiers -- %<flag><converter>
+			-https://docs.oracle.com/javase/tutorial/java/data/numberformat.html
+			-%n-new line -%d-double -%s-string -%f-float
+-Console Input
+	-import java.util.Scanner
+	-Scanner sc = new Scanner(System.in);
+	-next() goes until next token (aka space)
+	-Also can use System.console().readLine()
+-File I/O
+	-import java.util.Scanner, import java.io.File, import java.io.PrintStream
+	I-Scanner sc = new Scanner(new File("<file name.type>"));
+		-hasNext(), next(), nextInt() etc
+		-link: https://goo.gl/nMiQur
+	O-Prinsteam outf = new PrintStream(new File("<file name.type>"));
+		-outf.print() or outf.println() are the basic methods in PrintStream
+		-link: https://goo.gl/PP1Bz3
+-Currency Formatting
+	-import java.text.NumberFormat & import java.util.Locale
+	-create an instance with getCurrencyInstance(Locale.<>)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Data Abstraction / Classes --------------------------------------------------
+-get idea of concept without clarifying all details
+-Data Abstraction - encapsulation of data + operations (private variables)
+-Process Abstraction - group processes in a subprogram (classes structure)
+-ADT - abstract data type (aka classes)
+-Instance Variables (private) are Data Abstraction
+-methods in class are Process Abstraction
+ex: -public class Complex
+	-Complex a = new Complex(1.0, -3.0);
+	-Complex b = new Complex(2.0, 3.0);
+		-a is a Reference variable of Complex
+			-Values of a: null | address of an object in memory
+	-Complex Class contains one or many constructors of same name
+		-public Complex(double real, double img)
+		-public Complex()
+			-constructors are used set private instance variables
+			-the constructor used depends on inputs from running program
+	-public Complex add(Complex other)
+		-this is a method in class Complex (process abstraction)
+		-Complex c = a.add(b); // call from running program to add two Complex Objects based on add() method
+-Anatomy of Classes
+	-public [visible anywhere]
+	-private [visible only to instances of the current class]
+	-protected [visible to entire class heirarchy (aka framework)]
+		differences in scope of encapsulation for above 3
+	-abstract [class that defines basic properties of all subclasses]
+		-can never be instantiated
+		-can contain 0+ abstract methods
+		-subclasses must	a) be abstract, or
+							b) specify implementation of abstract methods
+	-static [only one copy for all instances of the class]
+	-final [can only assign value once]
+	-return types: void, int, double etc
+
+Inheritance -----------------------------------------------------------------
+-public class Animal
+-public class Dog extends Animal
+	-way of reusing interfaces and methods of animal
+	-a Dog is-an Animal conceptually
+	-Dog cannot access private variables in Animal
+		-super() can access and set values for instance variables in Animal to instantiate a Dog object
+	-highest superclass is initialized first (always use super first)
+	-Dog can have more instance variables/methods than Animal which will be instantiated after the super call instantiates the variables in Animal
+		-if you want default instance variables for Dog, then use this() to call the main constructor with super and the default values (lec10)
+	-subtypes must be able to sustitute for supertypes in method calls
+-override methods of superclass in subclass (optional @Override annotation)
+	-common overrides:
+		equals(make it value equivalent instead of identity)
+			-reflexive, symmetric & transitive
+			-consistent result if objects don't change
+			-a.equals(null) is ALWAYS false
+			*Steps:	-check not null
+					-check this == other (reflexive)
+					-check other instanceof this
+					-cast other to this
+					-check equivalence on significant fields (choice)
+		toString(default just prints class name & Hash code)
+-override vs overload
+	-override requires same name, same list of parameters & covariant return types
+		Covariant return means that if a method in Person returns Person, that same method overridden in SubPerson returns SubPerson.
+			[ex] public Person return() { return this; } //in Person
+				 public SubPerson return() { return this; } //in SubPerson
+		If that same method returns Person in SubPerson, that is called Contravariant and will not compile
+			[ex] public Person return() { return this; } //in SubPerson
+		NOTE: covariance does not apply to primitive return types
+	-overload requires same name, but have different parameters
+	-to avoid confusing override and overload, use @Override annotation
+
+
+-interface
+ public interface 2dShape {<function headers here>}
+ public Rectangle implements 2dShape
+	-a set of method headers that define a type
+	-not instantiated classes implement interfaces and override methods as needed
+		-solves the problem of subtype substition rules
+
+Implementing an Interface [inherit all public methods]
+Extending a Class [inherit all public methods AND implementation of super]
+
+Polymorphism ----------------------------------------------------------------
+-3 main aspects of oop: Data Abstraction(classes), Inheritance & Polymorphism
+-Polymorphism / Dynamic Method Binding
+	-using a single abstract method in a superclass to allow for cleaner coding
+	ex:
+		-All employees have monthly pay but all of them are calculated differently so Employee superclass and monthlyPay methods must be abstract so that subclasses (not abstract) can define specifics of methods. This allows creation of a single arraylist of Employees and a single loop to calculate total monthlyPay for all Employees.
+		-Employee type is static, subclasses of Employee are Dynamic.
+		-When a method is called on a static-type, the dynamic-type or run-time method in the subclass is used.
+-3 important rules!!!!!!
+	1-Single Responsibility: class only has code related to definition
+	2-Open-closed: Open for extension, closed for modification
+		-can add new types of employees without changing code for Company, Employee or any of the subclasses
+	3-Llisikov Substitution: All subtypes must be able to replace supertypes
+		-use either superclass or interface for this purpose
+
+Exceptions ------------------------------------------------------------------
+-when you try a statement, you need to look for a sentinel value that could indicate what the error is. If it can error, you include a
+catch(Exception e) clause and execute the catch code block instead, usually with a printing of the message.
+-Exception is bound to variable e, so you can print e.getMessage() to print details of error
+-Exceptions cover most errors and are a subclass of Throwable
+-to catch exceptions, you can either use try-catch on the method or declare the method with throws <name of exception>
+***(pdf pg13) Catch errors from Scanner input
+-Usually good to write multiple catches for each try depending on possible errors
+	-can also write your own exception class, but usually not a good idea
+-different exceptions to catch
+	FileNotFoundException, ParseException, Exception(most general)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Collections -----------------------------------------------------------------
+-sets, lists, queue, deque,  map, sorted map
+-Collections declares a few basic operations
+	-add(E e);
+	-contains(Object o); checks list for instance of o
+	-isEmpty();
+	-iterator(); iterates over items in a collection
+		ArrayList<String> hi = new ArrayList<>();
+		//adding values
+		Iterator iter = hi.iterator();
+			-hasNext() - returns whether iteration has more elements
+			-next() - returns next object in iteration
+			-remove() - removes last element returned from iteration
+			Writing own subclass that implements iterator
+				-need a cursor that points to next element in the collection
+					[ex] with arrays, cursor would keep track of index
+				-next() - returns object that cursor points to and points cursor to the next element
+				-hasNext() & remove() modified as needed
+	-remove(Object o);
+	-size();
+-Sets and Lists are interfaces implemented directly
+	List: Ordered collections / sequences
+		-List<E> name = Arrays.asList(--enter list--)
+		-Positional access
+			-get(int index) | indexOf(Object o) | remove(int index)
+			 set(int index, E e)
+		-Special interator ListIterator
+			-element insertion/deletion, bidirectional
+		-subList(int from, int to) // view of sublist
+		-ArrayList & Linked List
+	Set: Collection with no repeated elements or order
+		-Set<E> nameSet = new HashSet<E>(--enter list--)
+	SortedSet:
+	Map<K, V>: maps keys of type K to values of type V
+		-Map<String, String> capitals = new HashMap<>();
+		-capitols.put("New Jersey", "Trenton");
+		****the collection of keys is a Set****
+			-capitols.put("New Jersey", "South Brunswick?") this statement would override the previous value of Trenton for the Key
+			-the keys therefore are in no particular order
+	SortedMap:
+-Collections declare a few static methods that operate on collections
+	sort: sorts based on natural ordering defined in Comparable
+		Collections.sort(List<T> list)
+		Collections.sort(List<T> list, Comparator<? super T> c)
+			-sorts list based on order defined by Comparator
+	public static <Comparable extends <? super T>> void sort(List<T> List)
+		-generic method - put a type parameter before return type
+		-<? super T> - some superclass of T (example of generics)
+		**to use sort, T or some superclass of T must implement Comparable<T>
+	(interface) java.lang.Comparable<T>
+		-public int compareTo(T other)
+		-default returns -1 if this less than other
+						  0 if this == other
+						  1 if this greater than other
+		-can override compareTo in any method that implements Comparable
+	(interface) java.util.Comparator<T>
+		-int compare(T o1, T o2) // does the same as o1.compareTo(o2)
+		-boolean equals(Objects obj) // safe to use this method
+	Comparable vs Comparator
+		-Both can accomplish the same thing, but comparable generally used for natural comparisons(default), whereas instances of comparator can be instantiated to compare objects in many different ways. using methods .comparing() and .thenComparing() can also compare objects in multiple different ways in multiple different orders
+-Both equals and hashCode must be overridden properly in any class that implements Comparable/Comparator
+	-overriding equals (discussed in length previously)
+	-overriding hashCode -- public int hashCode()
+		/////////////////////Understanding Hash//////////////////////////////
+		-hashCode maps object to an int which is stored in a hash table. hash codes can be computed in constant time so it makes finding objects much easier
+		-in a hash table, if every object had a unique hashcode, then it would only require computing the hash code to retrieve the object. however, if all the objects had the same hashCode(acceptable), then all objects would be stored in the same "bucket" in a linked list which would take much more time to retrieve the object
+		-in a hash-based collection running hashSet.contains(obj) would first find the hash bucket, then use equals to run through the linked list in that bucket
+		/////////////////////////////////////////////////////////////////////
+		*Rules
+			1) a.hashCode(); must return a consistent value if called multiple times in the same program unless information pertinent to a.equals(b) changes
+			2) if a.equals(b) is true, then a and b must have same hashCode
+			3) Follow recipe highlighted on page 13 of Collections 3
+
+Lambda Expressions ----------------------------------------------------------
+-Instead of creating a specific subclass for use, can create a subclass and an instance of it in one statement definition for use only once
+-Inner Class
+	-new SuperType<type>() { Method Body };
+	-this creates a subclass of SuperType<type> and also instantiates the object required
+		[ex]
+		Collections.sort(list, new Comparator<Trooper>() {
+			//Method Body: must implement compare()
+		})
+	-if an interface has only 1 abstract method then it is a functional interface and in the method body, we need to implement the abstract method
+		-can still define and instantiate other types of interfaces/classes this way too
+-Lambda Expression
+	-Shortcut to Inner Class w/ same properties
+	-(T1 o1, ... , Tn on) -> { //method body };
+		-T's are parameter types and o's are parameter names
+	-Lambda expressions require target types
+		-Lambda expressions instantiate an object of the target type that the code requires
+-Method References
+	-Use if a method already exists that has the same parameter specs and could take a lambda expression as an argument
+	[ex]
+	1) object::instanceMethod | x -> object.instanceMethod(x)
+	2) Class::staticMethod | x -> Class.staticMethod(x)
+	3) Class::instanceMethod | (x, y) -> x.instanceMethod(y)
+-Streams
+ (https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html)
+	-an interface that carries values through a "pipeline"
+	-Source of values carried by stream (troopers.stream())
+	-intermediate operations (or none)
+		-filter(<predicate function>) - if return true, item stays in stream
+		-sorted(Comparator<E>) - defines ordering over stream elements
+		-allMatch(<predicate>) - if return true stay in stream
+		-anyMatch(<predicate>) - ""
+		-flatMap(<mapping function>)
+	-Terminal Operation - yields a new value as a result of stream operations
+		-forEach(<void function>) - [ex] printing values
+		-count() - returns long value of elements in stream
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Algorithms ------------------------------------------------------------------
+-Algorithms must be correct and efficient(least amount of resources required)
+-most concerned with time-complexity vs space-complexity of an algorithm
+	-basically care about worst case # of iterations
+	-Big O- (assume input size n)(worst case)
+		-multiply cost constant by number of times statement is run
+		-add all cost values, discard constant cost & lower order terms
+-most important algorithms fall under searching and sorting
+-Searching
+	-Linear search [n]
+		-use if you can make no assumption about order
+		-iterates through sequence and returns reference if found or null
+	-Binary search [ln(n)]
+		-use if sorted
+		-check middle, check pertinent half (apply recursively)
+-Sorting
+	-Insertion Sort [n^2] (iteration)
+		-placing each element into a newly created structure in order
+	-Merge Sort [n log(n)] (recursion)
+		-break vector in half until pieces of length one, then recombine
+	-Quick Sort [n log(n)] (recursion) at worst n^2
+		-select pivot, put greater values on right and lesser on left
+	-Bubble Sort [n^2] (iteration)
+		-pick one element, then swap with adjacent ones until in proper place
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Data Structures -------------------------------------------------------------
+-Linked data structures core concepts
+	-node- holds data item and links to other nodes
+		-when instantiating node, give information for this node and also connected nodes
+	-next() reference(same as pointer) points to the next object
+		-if at the last element of the structure, points to null
+-Singly-linked list
+	-has static variable head node, each node points to the next one, last node points to null
+	-adding elements (create a method add)
+		-create a new node element to be added
+		-set next reference of node to the head
+		-set head reference to new node of element you are adding
+-Doubly-linked list
+	-static variable head, data of this element, node previous & node next
+	-when adding elements, update previous and next links as well
+	-enteran also program your own get() or remove() functions, pretty much whatever you want
